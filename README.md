@@ -1,18 +1,55 @@
-# OpenArm Isaac Lab Simulation
+# OpenArm Isaac Lab
 
-We are developing **reinforcement learning (RL)** and **imitation learning (IL)** applications using the **OpenArm** model in the **Isaac Sim / Isaac Lab** environment. Our goal is to enable simple simulation, robust learning, and seamless **Sim2Real transfer** for robotic manipulation tasks.
+Welcome to the **OpenArm Isaac Lab Simulation Documentation**.
 
-We'll release all code as open source. See the [documentation](https://docs.openarm.dev/simulation/isaac-lab) for now.
+We are developing **Reinforcement Learning (RL)** and **Imitation Learning (IL)** applications using the **OpenArm** model within the **Isaac Sim / Isaac Lab** environment.
+Our aim is to provide:
+
+* Example codes for reinforcement learning tasks with OpenArm
+* Seamless **Sim2Real transfer** for robotic manipulation tasks
+
+All code will be released as **open source** to support the research and robotics community.
+
+---
+
+## Simulation Stack
+
+* **Isaac Sim v4.5.0**
+  [Isaac Sim Documentation](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/index.html)
+
+* **Isaac Lab v2.1.0**
+  [Isaac Lab Documentation](https://isaac-sim.github.io/IsaacLab/v2.1.0/source/setup/ecosystem.html)
+
+---
+
+## Demo Videos
+
+Preview the performance of OpenArm in various manipulation tasks:
+
+| Task                 | Demo Preview                      |
+| -------------------- | --------------------------------- |
+| Reaching         | ![](demo/openarm_reach_demo.gif)  |
+| Lifting a Cube    | ![](demo/openarm_lift_demo.gif)   |
+| Opening a Drawer | ![](demo/openarm_drawer_demo.gif) |
+
+## Coming Soon...
+
+We are actively developing and will soon release:
+
+* Reinforcement Learning examples
+* Imitation Learning examples
+* Sim2Real transfer code
+* Pretrained policies and curriculum examples
 
 ## Related links
 
-- 📚 Read the [documentation](https://docs.openarm.dev/simulation/isaac-lab)
-- 💬 Join the community on [Discord](https://discord.gg/FsZaZ4z3We)
-- 📬 Contact us through <openarm@enactic.ai>
+* Read the [documentation](https://docs.openarm.dev/)
+* Join the community on [Discord](https://discord.gg/FsZaZ4z3We)
+* Contact us through <openarm@enactic.ai>
 
 ## License
 
-[Apache License Version 2.0](LICENSE.txt)
+[Apache License 2.0](LICENSE.txt)
 
 Copyright 2025 Enactic, Inc.
 
