@@ -28,9 +28,9 @@ Preview the performance of OpenArm in various manipulation tasks:
 
 | Task                 | Demo Preview                      |
 | -------------------- | --------------------------------- |
-| Reaching         | ![](demo/openarm_reach_demo.gif)  |
-| Lifting a Cube    | ![](demo/openarm_lift_demo.gif)   |
-| Opening a Drawer | ![](demo/openarm_drawer_demo.gif) |
+| Reaching         | ![](demo/openarm_reach.gif)  |
+| Lifting a Cube    | ![](demo/openarm_lift.gif)   |
+| Opening a Drawer | ![](demo/openarm_drawer.gif) |
 
 ## Coming Soon...
 
