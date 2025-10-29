@@ -77,7 +77,7 @@ git clone git@github.com:enactic/openarm_isaac_lab.git
 
 1. Install python package with
 ```bash
-cd ~/openarm_isaac_lab
+cd openarm_isaac_lab
 python -m pip install -e source/openarm
 ```
 
@@ -103,7 +103,7 @@ conda activate env_isaaclab
 
 3. Install python package with
 ```bash
-cd ~/openarm_isaac_lab
+cd openarm_isaac_lab
 python -m pip install -e source/openarm
 ```
 
