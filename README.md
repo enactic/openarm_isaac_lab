@@ -51,7 +51,7 @@ This repository has been tested with:
 docker pull nvcr.io/nvidia/isaac-lab:2.3.0
 ```
 
-1. Create container
+2. Create container
 ```bash
 xhost +
 docker run --name isaac-lab --entrypoint bash -it --gpus all --rm -e "ACCEPT_EULA=Y" --network=host \
@@ -69,19 +69,19 @@ docker run --name isaac-lab --entrypoint bash -it --gpus all --rm -e "ACCEPT_EUL
    nvcr.io/nvidia/isaac-lab:2.3.0
 ```
 
-1. Clone git at your HOME directory
+3. Clone git at your HOME directory
 ```bash
 cd /workspace
 git clone git@github.com:enactic/openarm_isaac_lab.git
 ```
 
-1. Install python package with
+4. Install python package with
 ```bash
 cd openarm_isaac_lab
 python -m pip install -e source/openarm
 ```
 
-1. As a test, you can visualize random movement of OpenArm with
+5. With this command, you can verify that OpenArm package has been properly installed and check all the environments where it can be executed.
 ```bash
 python ./scripts/tools/list_envs.py
 ```
@@ -107,7 +107,7 @@ cd openarm_isaac_lab
 python -m pip install -e source/openarm
 ```
 
-4. As a test, you can visualize random movement of OpenArm with
+4. With this command, you can verify that OpenArm package has been properly installed and check all the environments where it can be executed.
 ```bash
 python ./scripts/tools/list_envs.py
 ```
