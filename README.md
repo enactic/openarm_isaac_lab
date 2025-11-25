@@ -144,15 +144,6 @@ python -m tensorboard.main --logdir=logs
 
 And open the google and go to `http://localhost:6006/`
 
-## Sim2sim
-<img src="video/sim2sim-reach-demo.gif" width="700"/>
-
-Coming soon...
-
-## Sim2Real Deployment using OpenArm
-
-Coming soon...
-
 ## Related links
 
 * Read the [documentation](https://docs.openarm.dev/)
