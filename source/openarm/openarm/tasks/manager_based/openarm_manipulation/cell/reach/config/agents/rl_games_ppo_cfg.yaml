@@ -54,7 +54,7 @@ params:
   load_path: '' # path to the checkpoint to load
 
   config:
-    name: openarm_bi_reach
+    name: openarm_cell_reach
     env_name: rlgpu
     device: 'cuda:0'
     device_name: 'cuda:0'
