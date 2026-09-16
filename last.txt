@@ -1,0 +1,2 @@
+python ./scripts/reinforcement_learning/skrl/train.py --task Isaac-Position-Piece-OpenArm-v0 --num_envs 512 --headless --max_iterations 4000 --checkpoint logs/skrl/openarm_position_piece/2026-09-15_11-07-00_ppo_torch/checkpoints/best_agent.pt 
+
