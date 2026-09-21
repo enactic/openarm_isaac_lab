@@ -105,6 +105,28 @@ class OpenArmPositionPieceEnvCfg(PositionPieceEnvCfg):
                 ),
             ],
         )
+        self.scene.wrist_frame = FrameTransformerCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_link0",
+            debug_vis=False,
+            visualizer_cfg=marker_cfg,
+            target_frames=[
+                FrameTransformerCfg.FrameCfg(
+                    prim_path="{ENV_REGEX_NS}/Robot/openarm_link7",
+                    name="wrist",
+                ),
+            ],
+        )
+        self.scene.hand_frame = FrameTransformerCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_link0",
+            debug_vis=False,
+            visualizer_cfg=marker_cfg,
+            target_frames=[
+                FrameTransformerCfg.FrameCfg(
+                    prim_path="{ENV_REGEX_NS}/Robot/openarm_hand",
+                    name="hand",
+                ),
+            ],
+        )
 
 
 @configclass

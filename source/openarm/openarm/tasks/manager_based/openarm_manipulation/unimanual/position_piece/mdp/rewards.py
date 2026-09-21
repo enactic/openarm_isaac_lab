@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import torch
+import torch.nn.functional as F 
 from typing import TYPE_CHECKING
 
 from isaaclab.assets import RigidObject
@@ -24,6 +25,28 @@ from isaaclab.utils.math import combine_frame_transforms, quat_error_magnitude, 
 
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
+
+def frame_height_from_table(
+    env: ManagerBasedRLEnv,
+    threshold: float,
+    robot_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+    frame_cfg: SceneEntityCfg = SceneEntityCfg("hand_frame"),
+) -> torch.Tensor:
+    """Reward the agent for reaching the object using tanh-kernel."""
+    robot: RigidObject = env.scene[robot_cfg.name]
+    frame: FrameTransformer = env.scene[frame_cfg.name]
+    height = frame.data.target_pos_w[..., 0, :][:, 2] - robot.data.root_pos_w[:, 2] 
+
+    # Softplus of -(height - threshold): 
+    # - large when height << threshold
+    # - ~0 when height >> threshold
+    # - equals softplus(0)=ln(2)≈0.693 at height == threshold
+    #slope = 0.60 + 2.5 / threshold
+    #print("MEOWWWWWWWWWWWWWWWWWWWWWW")
+    #print(height)
+    #print(F.softplus(-(height - threshold) * slope - 2.5))
+    #return F.softplus(-(height - threshold) * slope - 2.5)
+    return (threshold - height).clamp(min=0)
 
 def object_ee_distance(
     env: ManagerBasedRLEnv,

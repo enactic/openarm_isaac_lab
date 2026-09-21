@@ -145,6 +145,15 @@ class ObservationsCfg:
                 )
             },
         )
+        joint_effort = ObsTerm(
+            func=mdp.joint_effort,
+            params={
+                "asset_cfg": SceneEntityCfg(
+                    "robot", joint_names=["openarm_joint.*", "openarm_finger_joint.*"]
+                )
+            },
+        )
+
         object_pose = ObsTerm(func=mdp.object_pose_in_robot_root_frame)
         #target_object_position = ObsTerm(
         #    func=mdp.generated_commands, params={"command_name": "object_pose"}
@@ -187,7 +196,7 @@ class RewardsCfg:
     """Reward terms for the MDP."""
 
     reaching_object = RewTerm(
-        func=mdp.object_ee_distance, params={"std": 0.1}, weight=1.1
+        func=mdp.object_ee_distance, params={"std": 0.1}, weight=1.5
     )
 
     object_goal_tracking = RewTerm(
@@ -199,7 +208,7 @@ class RewardsCfg:
 
     object_goal_tracking_fine_grained = RewTerm(
         func=mdp.object_goal_distance,
-        params={"std": 0.05, "command_name": "object_pose"},
+        params={"std": 0.04, "command_name": "object_pose"},
         weight=7.0,
     )
 
@@ -209,11 +218,23 @@ class RewardsCfg:
         weight=3.0,
     )
 
-    #object_goal_orientation_tracking_fine_grained = RewTerm(
-    #    func=mdp.object_goal_orientation,
-    #    params={"std": 0.05, "command_name": "object_pose"},
-    #    weight=5.0,
-    #)
+    object_goal_orientation_tracking_fine_grained = RewTerm(
+        func=mdp.object_goal_orientation,
+        params={"std": 0.7, "command_name": "object_pose"},
+        weight=9.0,
+    )
+
+    hand_away_from_table = RewTerm(
+        func=mdp.frame_height_from_table,
+        params={"threshold": 0.1, "frame_cfg": SceneEntityCfg("hand_frame")},
+        weight=-60.0,
+    )
+    
+    wrist_away_from_table = RewTerm(
+        func=mdp.frame_height_from_table,
+        params={"threshold": 0.15, "frame_cfg": SceneEntityCfg("wrist_frame")},
+        weight=-60.0,
+    )
 
     # action penalty
     action_rate = RewTerm(func=mdp.action_rate_l2, weight=-1e-4)

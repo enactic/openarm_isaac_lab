@@ -20,7 +20,7 @@ from typing import TYPE_CHECKING
 
 from isaaclab.assets import RigidObject
 from isaaclab.managers import SceneEntityCfg
-from isaaclab.utils.math import subtract_frame_transforms, quat_from_euler_xyz, quat_mul, sample_uniform
+from isaaclab.utils.math import subtract_frame_transforms, quat_from_euler_xyz, quat_mul, sample_uniform, euler_xyz_from_quat
 
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
@@ -56,7 +56,11 @@ def object_pose_in_robot_root_frame(
         object_pos_w,
         object_quat_w,
     )
-    return torch.cat([object_pos_b, object_quat_b], dim=-1)
+
+    roll, pitch, yaw = euler_xyz_from_quat(object_quat_b)
+    object_euler_b = torch.stack([roll, pitch, yaw], dim=-1)
+
+    return torch.cat([object_pos_b, object_euler_b], dim=-1)
 
 def reset_root_state_polar(env, env_ids, pose_range, asset_cfg):
     asset = env.scene[asset_cfg.name]
