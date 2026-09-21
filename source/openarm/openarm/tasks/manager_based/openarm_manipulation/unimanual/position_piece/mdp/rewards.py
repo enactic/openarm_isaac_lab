@@ -20,7 +20,7 @@ from typing import TYPE_CHECKING
 
 from isaaclab.assets import RigidObject
 from isaaclab.managers import SceneEntityCfg
-from isaaclab.sensors import FrameTransformer
+from isaaclab.sensors import FrameTransformer, ContactSensor
 from isaaclab.utils.math import combine_frame_transforms, quat_error_magnitude, quat_mul
 
 if TYPE_CHECKING:
@@ -122,3 +122,14 @@ def object_goal_orientation(
     return (distance < 0.05) * (
         1 - torch.tanh(angle_error / std)
     )
+
+def debug(env: ManagerBasedRLEnv):
+    sensor_cfg = SceneEntityCfg("table_contact_l7")
+    contact_sensor: ContactSensor = env.scene[sensor_cfg.name]
+
+    net_forces = contact_sensor.data.net_forces_w_history[:, :, sensor_cfg.body_ids, :]
+    # 3. Compute the force magnitude and find the maximum over history
+    force_magnitude = net_forces.norm(dim=-1)  # (num_envs, history_length, num_bodies)
+    max_force = force_magnitude.max(dim=1)[0]   # (num_envs, num_bodies)
+    #print(max_force)
+    return torch.zeros(1, device = max_force.device)

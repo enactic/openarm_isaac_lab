@@ -32,6 +32,7 @@ OPEN_ARM_CFG = ArticulationCfg(
             solver_position_iteration_count=8,
             solver_velocity_iteration_count=0,
         ),
+        activate_contact_sensors = True
     ),
     init_state=ArticulationCfg.InitialStateCfg(
         joint_pos={

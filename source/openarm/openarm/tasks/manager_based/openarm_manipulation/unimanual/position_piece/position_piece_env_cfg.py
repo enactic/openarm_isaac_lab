@@ -236,12 +236,53 @@ class RewardsCfg:
         weight=-60.0,
     )
 
+    l7_contact_force_penalty = RewTerm(
+    func=mdp.contact_forces,
+    weight=-0.5,             
+    params={
+        "sensor_cfg": SceneEntityCfg("table_contact_l7"),
+        "threshold": 5.0,
+        },
+    )
+    lf_contact_force_penalty = RewTerm(
+    func=mdp.contact_forces,
+    weight=-0.2,             
+    params={
+        "sensor_cfg": SceneEntityCfg("table_contact_lf"),
+        "threshold": 5.0,
+        },
+    )
+    rf_contact_force_penalty = RewTerm(
+    func=mdp.contact_forces,
+    weight=-0.2,             
+    params={
+        "sensor_cfg": SceneEntityCfg("table_contact_rf"),
+        "threshold": 5.0,
+        },
+    )
+
+    #debug = RewTerm(
+    #    func=mdp.debug,
+    #    params={},
+    #    weight=1.0
+    #)
+
+
     # action penalty
     action_rate = RewTerm(func=mdp.action_rate_l2, weight=-1e-4)
 
     joint_vel = RewTerm(
         func=mdp.joint_vel_l2,
-        weight=-1e-4,
+        weight=-2e-4,
+        params={
+            "asset_cfg": SceneEntityCfg(
+                "robot", joint_names=["openarm_joint.*", "openarm_finger_joint.*"]
+            )
+        },
+    )
+    joint_acc = RewTerm(
+        func=mdp.joint_acc_l2,
+        weight=-2e-4,
         params={
             "asset_cfg": SceneEntityCfg(
                 "robot", joint_names=["openarm_joint.*", "openarm_finger_joint.*"]
@@ -274,6 +315,11 @@ class CurriculumCfg:
     joint_vel = CurrTerm(
         func=mdp.modify_reward_weight,
         params={"term_name": "joint_vel", "weight": -1e-1, "num_steps": 10000},
+    )
+
+    joint_acc = CurrTerm(
+        func=mdp.modify_reward_weight,
+        params={"term_name": "joint_acc", "weight": -1e-1, "num_steps": 10000},
     )
 
 

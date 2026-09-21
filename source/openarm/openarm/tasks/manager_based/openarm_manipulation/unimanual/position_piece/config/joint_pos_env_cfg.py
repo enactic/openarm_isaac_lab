@@ -14,7 +14,7 @@
 
 
 from isaaclab.assets import RigidObjectCfg
-from isaaclab.sensors import FrameTransformerCfg
+from isaaclab.sensors import FrameTransformerCfg, ContactSensorCfg
 from isaaclab.sensors.frame_transformer.frame_transformer_cfg import OffsetCfg
 from isaaclab.sim.schemas.schemas_cfg import RigidBodyPropertiesCfg
 from isaaclab.sim.spawners.from_files.from_files_cfg import UsdFileCfg
@@ -126,6 +126,29 @@ class OpenArmPositionPieceEnvCfg(PositionPieceEnvCfg):
                     name="hand",
                 ),
             ],
+        )
+
+        contact_debug_vis = False;
+        self.scene.table_contact_l7 = ContactSensorCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_link7",
+            debug_vis=contact_debug_vis,
+            update_period=0.0,
+            history_length=3,
+            filter_prim_paths_expr=["{ENV_REGEX_NS}/Table"],
+        )
+        self.scene.table_contact_lf = ContactSensorCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_left_finger",
+            debug_vis=contact_debug_vis,
+            update_period=0.0,
+            history_length=3,
+            filter_prim_paths_expr=["{ENV_REGEX_NS}/Table"],
+        )
+        self.scene.table_contact_rf = ContactSensorCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_right_finger",
+            debug_vis=contact_debug_vis,
+            update_period=0.0,
+            history_length=3,
+            filter_prim_paths_expr=["{ENV_REGEX_NS}/Table"],
         )
 
 
