@@ -1,0 +1,10 @@
+pyproject.toml
+setup.py
+openarm/__init__.py
+openarm/ui_extension_example.py
+openarm.egg-info/PKG-INFO
+openarm.egg-info/SOURCES.txt
+openarm.egg-info/dependency_links.txt
+openarm.egg-info/not-zip-safe
+openarm.egg-info/requires.txt
+openarm.egg-info/top_level.txt

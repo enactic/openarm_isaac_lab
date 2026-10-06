@@ -22,7 +22,7 @@ from source.openarm.openarm.tasks.manager_based.openarm_manipulation import (
 
 OPEN_ARM_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=f"{OPENARM_ROOT_DIR}/usds/openarm_unimanual/openarm_unimanual.usd",
+        usd_path=f"{OPENARM_ROOT_DIR}/usds/openarm_cell/v2_0_cell.usd",
         rigid_props=sim_utils.RigidBodyPropertiesCfg(
             disable_gravity=False,
             max_depenetration_velocity=5.0,
@@ -32,38 +32,57 @@ OPEN_ARM_CFG = ArticulationCfg(
             solver_position_iteration_count=8,
             solver_velocity_iteration_count=0,
         ),
-        activate_contact_sensors = True
     ),
     init_state=ArticulationCfg.InitialStateCfg(
         joint_pos={
-            "openarm_joint1": 1.57,
-            "openarm_joint2": 0.0,
-            "openarm_joint3": -1.57,
-            "openarm_joint4": 1.57,
-            "openarm_joint5": 0.0,
-            "openarm_joint6": 0.0,
-            "openarm_joint7": 0.0,
-            "openarm_finger_joint.*": 0.044,
+            "openarm_left_joint1": 0.0,
+            "openarm_left_joint2": 0.0,
+            "openarm_left_joint3": 0.0,
+            "openarm_left_joint4": 0.0,
+            "openarm_left_joint5": 0.0,
+            "openarm_left_joint6": 0.0,
+            "openarm_left_joint7": 0.0,
+            "openarm_right_joint1": 0.0,
+            "openarm_right_joint2": 0.0,
+            "openarm_right_joint3": 0.0,
+            "openarm_right_joint4": 0.0,
+            "openarm_right_joint5": 0.0,
+            "openarm_right_joint6": 0.0,
+            "openarm_right_joint7": 0.0,
+            "openarm_left_finger_joint.*": 0.044,
+            "openarm_right_finger_joint.*": 0.044,
         },
     ),
     actuators={
         "openarm_arm": ImplicitActuatorCfg(
-            joint_names_expr=["openarm_joint[1-7]"],
+            joint_names_expr=[
+                "openarm_left_joint[1-7]",
+                "openarm_right_joint[1-7]",
+            ],
             velocity_limit_sim={
-                "openarm_joint[1-2]": 2.175,
-                "openarm_joint[3-4]": 2.175,
-                "openarm_joint[5-7]": 2.61,
+                "openarm_left_joint[1-2]": 2.175,
+                "openarm_right_joint[1-2]": 2.175,
+                "openarm_left_joint[3-4]": 2.175,
+                "openarm_right_joint[3-4]": 2.175,
+                "openarm_left_joint[5-7]": 2.61,
+                "openarm_right_joint[5-7]": 2.61,
             },
             effort_limit_sim={
-                "openarm_joint[1-2]": 40.0,
-                "openarm_joint[3-4]": 27.0,
-                "openarm_joint[5-7]": 7.0,
+                "openarm_left_joint[1-2]": 40.0,
+                "openarm_right_joint[1-2]": 40.0,
+                "openarm_left_joint[3-4]": 27.0,
+                "openarm_right_joint[3-4]": 27.0,
+                "openarm_left_joint[5-7]": 7.0,
+                "openarm_right_joint[5-7]": 7.0,
             },
             stiffness=80.0,
             damping=4.0,
         ),
         "openarm_gripper": ImplicitActuatorCfg(
-            joint_names_expr=["openarm_finger_joint.*"],
+            joint_names_expr=[
+                "openarm_left_finger_joint.*",
+                "openarm_right_finger_joint.*",
+            ],
             velocity_limit_sim=0.2,
             effort_limit_sim=333.33,
             stiffness=2e3,
@@ -79,6 +98,8 @@ OPEN_ARM_HIGH_PD_CFG = OPEN_ARM_CFG.copy()
 OPEN_ARM_HIGH_PD_CFG.spawn.rigid_props.disable_gravity = True
 OPEN_ARM_HIGH_PD_CFG.actuators["openarm_arm"].stiffness = 400.0
 OPEN_ARM_HIGH_PD_CFG.actuators["openarm_arm"].damping = 80.0
+OPEN_ARM_HIGH_PD_CFG.actuators["openarm_gripper"].stiffness = 2e3
+OPEN_ARM_HIGH_PD_CFG.actuators["openarm_gripper"].damping = 1e2
 """Configuration of OpenArm robot with stiffer PD control.
 
 This configuration is useful for task-space control using differential IK.

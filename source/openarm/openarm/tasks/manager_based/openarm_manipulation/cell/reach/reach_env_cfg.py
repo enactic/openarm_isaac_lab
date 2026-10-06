@@ -77,12 +77,12 @@ class CommandsCfg:
         resampling_time_range=(4.0, 4.0),
         debug_vis=True,
         ranges=mdp.UniformPoseCommandCfg.Ranges(
-            pos_x=(0.15, 0.3),
-            pos_y=(0.15, 0.25),
-            pos_z=(0.3, 0.5),
+            pos_x=(0.0, 0.15),
+            pos_y=(0.05, 0.15),
+            pos_z=(1.05, 1.15),
             roll=(-math.pi / 6, math.pi / 6),
             pitch=(3 * math.pi / 2, 3 * math.pi / 2),
-            yaw=(8 * math.pi / 9, 9 * math.pi / 9),
+            yaw=(14 * math.pi / 9, 16 * math.pi / 9),
         ),
     )
 
@@ -92,12 +92,12 @@ class CommandsCfg:
         resampling_time_range=(4.0, 4.0),
         debug_vis=True,
         ranges=mdp.UniformPoseCommandCfg.Ranges(
-            pos_x=(0.15, 0.3),
-            pos_y=(-0.25, -0.15),
-            pos_z=(0.3, 0.5),
+            pos_x=(0.0, 0.15),
+            pos_y=(-0.15, -0.05),
+            pos_z=(1.05, 1.25),
             roll=(-math.pi / 6, math.pi / 6),
             pitch=(3 * math.pi / 2, 3 * math.pi / 2),
-            yaw=(8 * math.pi / 9, 10 * math.pi / 9),
+            yaw=(2 * math.pi / 9, 4 * math.pi / 9),
         ),
     )
 

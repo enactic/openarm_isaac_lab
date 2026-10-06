@@ -1,0 +1,164 @@
+# Copyright 2025 Enactic, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+from isaaclab.assets import RigidObjectCfg
+from isaaclab.sensors import FrameTransformerCfg, ContactSensorCfg
+from isaaclab.sensors.frame_transformer.frame_transformer_cfg import OffsetCfg
+from isaaclab.sim.schemas.schemas_cfg import RigidBodyPropertiesCfg
+from isaaclab.sim.spawners.from_files.from_files_cfg import UsdFileCfg
+from isaaclab.utils import configclass
+from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR
+
+from .. import mdp
+from ..position_piece_env_cfg import (
+    PositionPieceEnvCfg,
+)
+
+import math
+
+##
+# Pre-defined configs
+##
+from isaaclab.markers.config import FRAME_MARKER_CFG  # isort: skip
+from source.openarm.openarm.tasks.manager_based.openarm_manipulation.assets.openarm_unimanual import (
+    OPEN_ARM_CFG,
+)
+from source.openarm.openarm.tasks.manager_based.openarm_manipulation import (
+    OPENARM_ROOT_DIR,
+)
+
+
+@configclass
+class OpenArmPositionPieceEnvCfg(PositionPieceEnvCfg):
+    def __post_init__(self):
+        # post init of parent
+        super().__post_init__()
+
+        # Set OpenArm as robot
+        self.scene.robot = OPEN_ARM_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+
+        # Set actions for the specific robot type (OpenArm)
+        self.actions.arm_action = mdp.JointPositionActionCfg(
+            asset_name="robot",
+            joint_names=[
+                "openarm_joint.*",
+            ],
+            scale=0.5,
+            use_default_offset=True,  # False
+        )
+
+        self.actions.gripper_action = mdp.BinaryJointPositionActionCfg(
+            asset_name="robot",
+            joint_names=["openarm_finger_joint.*"],
+            open_command_expr={"openarm_finger_joint.*": 0.044},
+            close_command_expr={"openarm_finger_joint.*": 0.0},
+        )
+
+        # Set the body name for the end effector
+        self.commands.object_pose.body_name = "openarm_hand"
+        #self.commands.object_pose.ranges.pitch = (math.pi / 2, math.pi / 2)
+
+        # Set Cube as object
+        self.scene.object = RigidObjectCfg(
+            prim_path="{ENV_REGEX_NS}/Object",
+            init_state=RigidObjectCfg.InitialStateCfg(
+                pos=[0.4, 0, 0.055], rot=[1, 0, 0, 0]
+            ),
+            spawn=UsdFileCfg(
+                usd_path=f"{OPENARM_ROOT_DIR}/usds/objects/RigidObjectPiece1.usd",
+                scale=(1, 1, 1),
+                rigid_props=RigidBodyPropertiesCfg(
+                    solver_position_iteration_count=16,
+                    solver_velocity_iteration_count=1,
+                    max_angular_velocity=1000.0,
+                    max_linear_velocity=1000.0,
+                    max_depenetration_velocity=5.0,
+                    disable_gravity=False,
+                ),
+            ),
+        )
+
+        # Listens to the required transforms
+        marker_cfg = FRAME_MARKER_CFG.copy()
+        marker_cfg.markers["frame"].scale = (0.1, 0.1, 0.1)
+        marker_cfg.prim_path = "/Visuals/FrameTransformer"
+        self.scene.ee_frame = FrameTransformerCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_link0",
+            debug_vis=False,
+            visualizer_cfg=marker_cfg,
+            target_frames=[
+                FrameTransformerCfg.FrameCfg(
+                    prim_path="{ENV_REGEX_NS}/Robot/openarm_ee_tcp",
+                    name="end_effector",
+                ),
+            ],
+        )
+        self.scene.wrist_frame = FrameTransformerCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_link0",
+            debug_vis=False,
+            visualizer_cfg=marker_cfg,
+            target_frames=[
+                FrameTransformerCfg.FrameCfg(
+                    prim_path="{ENV_REGEX_NS}/Robot/openarm_link7",
+                    name="wrist",
+                ),
+            ],
+        )
+        self.scene.hand_frame = FrameTransformerCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_link0",
+            debug_vis=False,
+            visualizer_cfg=marker_cfg,
+            target_frames=[
+                FrameTransformerCfg.FrameCfg(
+                    prim_path="{ENV_REGEX_NS}/Robot/openarm_hand",
+                    name="hand",
+                ),
+            ],
+        )
+
+        contact_debug_vis = False;
+        self.scene.table_contact_l7 = ContactSensorCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_link7",
+            debug_vis=contact_debug_vis,
+            update_period=0.0,
+            history_length=3,
+            filter_prim_paths_expr=["{ENV_REGEX_NS}/Table"],
+        )
+        self.scene.table_contact_lf = ContactSensorCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_left_finger",
+            debug_vis=contact_debug_vis,
+            update_period=0.0,
+            history_length=3,
+            filter_prim_paths_expr=["{ENV_REGEX_NS}/Table"],
+        )
+        self.scene.table_contact_rf = ContactSensorCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/openarm_right_finger",
+            debug_vis=contact_debug_vis,
+            update_period=0.0,
+            history_length=3,
+            filter_prim_paths_expr=["{ENV_REGEX_NS}/Table"],
+        )
+
+
+@configclass
+class OpenArmPositionPieceEnvCfg_PLAY(OpenArmPositionPieceEnvCfg):
+    def __post_init__(self):
+        # post init of parent
+        super().__post_init__()
+        # make a smaller scene for play
+        self.scene.num_envs = 50
+        self.scene.env_spacing = 2.5
+        # disable randomization for play
+        self.observations.policy.enable_corruption = False
