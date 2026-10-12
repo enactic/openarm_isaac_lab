@@ -22,12 +22,22 @@ This repository has been tested with:
 - **Isaac Lab v2.3.0**
 - **Python 3.11**
 
+### OpenArm + O6 cup-lift demo
+
+[<img src="video/openarm-o6-dual-cup-lift.gif" width="800" alt="OpenArm with O6 hand lifting a cup in Isaac Sim"/>](video/openarm-o6-dual-cup-lift.mp4)
+
+Dual-view Isaac Sim replay of the physics-validated scripted reference used to
+bootstrap bounded residual RL. The current clip demonstrates the nominal
+18 g, 90/56 x 118 mm cup lift; it is not yet a learned-policy or real-hardware
+success-rate claim. Click the preview for the original MP4.
+
 ---
 
 ## Index
 - [OpenArm Isaac Lab](#openarm-isaac-lab)
   - [Overview](#overview)
     - [What this repo offers](#what-this-repo-offers)
+    - [OpenArm + O6 cup-lift demo](#openarm--o6-cup-lift-demo)
   - [Index](#index)
   - [Installation Guide](#installation-guide)
     - [(Option 1) Docker installation (linux only)](#option-1-docker-installation-linux-only)
